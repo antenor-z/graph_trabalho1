@@ -85,19 +85,21 @@ static void initialize (void)
 
     glEnable(GL_DEPTH_TEST);
     camera = Camera2D::Make(-20,20,-20,20);
-    auto tex = Texture::Make("face",glm::vec3(1,1,0.9));
+    auto earthTex = Texture::Make("face", glm::vec3(0, 0, 1));
+    auto sunTex = Texture::Make("face", glm::vec3(1, 1, 0.9));
+    auto moonTex = Texture::Make("face", glm::vec3(0.3, 0.3, 0.3));
+    auto mercuryTex = Texture::Make("face", glm::vec3(0.4, 0.4, 0.4));
 
 
     auto sunScale = Transform::Make();
     sunScale->Scale(3, 3, 1);
-    auto sun = Node::Make(shader, sunScale, {Color::Make(1, 1, 1)}, {Disk::Make()});
-
-    auto earth = Node::Make(shader, {Color::Make(0, 0, 1)}, {Disk::Make()});
+    auto sun = Node::Make(shader, sunScale, {Color::Make(1, 1, 1), sunTex}, {Disk::Make()});
+    auto earth = Node::Make(shader, {Color::Make(1, 1, 1), earthTex}, {Disk::Make()});
 
     auto moonTransScale = Transform::Make();
     moonTransScale->Translate(2, 0, 0);
     moonTransScale->Scale(0.25, 0.25, 1);
-    auto moon = Node::Make(shader, moonTransScale, {Color::Make(0.3, 0.3, 0.3)}, {Disk::Make()});
+    auto moon = Node::Make(shader, moonTransScale, {Color::Make(1, 1, 1), moonTex}, {Disk::Make()});
 
     auto moonOrbitTrans = Transform::Make();
     auto moonOrbit = Node::Make(shader, moonOrbitTrans, {moon});
@@ -112,12 +114,12 @@ static void initialize (void)
     auto mercuryTrans = Transform::Make();
     mercuryTrans->Translate(8, 0, 0);
     mercuryTrans->Scale(0.5, 0.5, 1);
-    auto mercury = Node::Make(shader, mercuryTrans, {Color::Make(0.4, 0.4, 0.4)}, {Disk::Make()});
+    auto mercury = Node::Make(shader, mercuryTrans, {Color::Make(1, 1, 1), mercuryTex}, {Disk::Make()});
 
     auto mercuryOrbitTrans = Transform::Make();
     auto mercuryOrbit = Node::Make(shader, mercuryOrbitTrans, {mercury});
 
-    auto root = Node::Make(shader, {tex}, {sun, mercuryOrbit, earthMoonOrbit});
+    auto root = Node::Make(shader, {sun, mercuryOrbit, earthMoonOrbit});
   
     scene = Scene::Make(root);
     scene->AddEngine(MovePointer::Make(moonOrbitTrans, 28));
