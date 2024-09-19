@@ -20,6 +20,7 @@
 #include "shader.h"
 #include "disk.h"
 #include "triangle.h"
+#include "square.h"
 #include <iostream>
 
 const int WIDTH = 800;
@@ -89,10 +90,16 @@ static void initialize (void)
     auto sunTex = Texture::Make("face", "textures/sun_tex.png");
     auto moonTex = Texture::Make("face", "textures/moon_tex.png");
     auto mercuryTex = Texture::Make("face", "textures/mercury_tex.png");
+    auto spaceTex = Texture::Make("face", "textures/space_tex.png");
 
+    auto spaceScale = Transform::Make();
+    spaceScale->Translate(0, 0, 0);
+    spaceScale->Scale(20, 20, 1);
+    auto space = Node::Make(shader, spaceScale, {Color::Make(0.8, 0.8, 0.8), spaceTex}, {Square::Make()});
 
     auto sunScale = Transform::Make();
     sunScale->Scale(3, 3, 1);
+    sunScale->Translate(0, 0, 1);
     auto sun = Node::Make(shader, sunScale, {Color::Make(1, 1, 1), sunTex}, {Disk::Make()});
     auto earthOrbit = Transform::Make();
     auto earth = Node::Make(shader, earthOrbit, {Color::Make(1, 1, 1), earthTex}, {Disk::Make()});
@@ -106,21 +113,21 @@ static void initialize (void)
     auto moonOrbit = Node::Make(shader, moonOrbitTrans, {moon});
 
     auto earthMoonTrans = Transform::Make();
-    earthMoonTrans->Translate(15, 0, 0);
+    earthMoonTrans->Translate(15, 0, 1);
     auto earthMoon = Node::Make(shader, earthMoonTrans, {moonOrbit, earth});
 
     auto earthMoonOrbitTrans = Transform::Make();
     auto earthMoonOrbit = Node::Make(shader, earthMoonOrbitTrans, {earthMoon});
 
     auto mercuryTrans = Transform::Make();
-    mercuryTrans->Translate(8, 0, 0);
+    mercuryTrans->Translate(8, 0, 1);
     mercuryTrans->Scale(0.5, 0.5, 1);
     auto mercury = Node::Make(shader, mercuryTrans, {Color::Make(1, 1, 1), mercuryTex}, {Disk::Make()});
 
     auto mercuryOrbitTrans = Transform::Make();
     auto mercuryOrbit = Node::Make(shader, mercuryOrbitTrans, {mercury});
 
-    auto root = Node::Make(shader, {sun, mercuryOrbit, earthMoonOrbit});
+    auto root = Node::Make(shader, {space, sun, mercuryOrbit, earthMoonOrbit});
   
     scene = Scene::Make(root);
     scene->AddEngine(MovePointer::Make(moonOrbitTrans, 28));
