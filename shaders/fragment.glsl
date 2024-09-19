@@ -2,7 +2,7 @@
 uniform vec4 color;
 uniform sampler2D face;
 
-in struct {
+in Data {
     vec2 texcoord;
 } f;
 

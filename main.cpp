@@ -86,7 +86,7 @@ static void initialize (void)
     glEnable(GL_DEPTH_TEST);
     camera = Camera2D::Make(-20,20,-20,20);
     auto earthTex = Texture::Make("face", glm::vec3(0, 0, 1));
-    auto sunTex = Texture::Make("face", glm::vec3(1, 1, 0.9));
+    auto sunTex = Texture::Make("face", "textures/teste.png");
     auto moonTex = Texture::Make("face", glm::vec3(0.3, 0.3, 0.3));
     auto mercuryTex = Texture::Make("face", glm::vec3(0.4, 0.4, 0.4));
 

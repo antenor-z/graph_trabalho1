@@ -20,17 +20,24 @@ DiskPtr Disk::Make(int nslice) {
 
 Disk::Disk(int nslice) : m_nslice(nslice), m_vao(0) {
     std::vector<float> vertices;
+    std::vector<float> texcoord;
     std::vector<unsigned int> inc;
 
-    vertices.push_back(0.0f);
-    vertices.push_back(0.0f);
+    // vertices.push_back(0.0f);  // Center vertex
+    // vertices.push_back(0.0f);
+    // texcoord.push_back(0.5f); // Center tex coord
+    // texcoord.push_back(0.5f);
 
     float angleStep = 2.0f * M_PI / m_nslice;
-    for (int i = 0; i <= m_nslice; i++)
-    {
+    for (int i = 0; i <= m_nslice; i++) {
         float angle = i * angleStep;
-        vertices.push_back(cos(angle));
-        vertices.push_back(sin(angle));
+        float x = cos(angle);
+        float y = sin(angle);
+        vertices.push_back(x);
+        vertices.push_back(y);
+        
+        texcoord.push_back(0.5f + 0.5f * cos(angle));
+        texcoord.push_back(0.5f + 0.5f * sin(angle));
     }
 
     for (int i = 1; i <= m_nslice; i++) {
@@ -46,8 +53,15 @@ Disk::Disk(int nslice) : m_nslice(nslice), m_vao(0) {
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr); // coord
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);  // position
     glEnableVertexAttribArray(0);
+
+    GLuint texCoordBuffer;
+    glGenBuffers(1, &texCoordBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+    glBufferData(GL_ARRAY_BUFFER, texcoord.size() * sizeof(float), texcoord.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);  // texture coordinates
+    glEnableVertexAttribArray(1);
 
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -64,5 +78,5 @@ Disk::~Disk() {
 void Disk::Draw(StatePtr) {
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, 3 * m_nslice, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+    //glBindVertexArray(0);
 }
