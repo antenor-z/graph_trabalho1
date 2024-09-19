@@ -92,10 +92,10 @@ static void initialize (void)
     auto mercuryTex = Texture::Make("face", "textures/mercury_tex.png");
     auto spaceTex = Texture::Make("face", "textures/space_tex.png");
 
-    auto spaceScale = Transform::Make();
-    spaceScale->Translate(0, 0, 0);
-    spaceScale->Scale(30, 20, 1);
-    auto space = Node::Make(shader, spaceScale, {Color::Make(0.8, 0.8, 0.8), spaceTex}, {Square::Make()});
+    auto spaceTrans = Transform::Make();
+    spaceTrans->Translate(0, 0, 0);
+    spaceTrans->Scale(30, 20, 1);
+    auto space = Node::Make(shader, spaceTrans, {Color::Make(0.8, 0.8, 0.8), spaceTex}, {Square::Make()});
 
     auto sunScale = Transform::Make();
     sunScale->Scale(3, 3, 1);
