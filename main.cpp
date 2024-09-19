@@ -94,7 +94,7 @@ static void initialize (void)
 
     auto spaceScale = Transform::Make();
     spaceScale->Translate(0, 0, 0);
-    spaceScale->Scale(20, 20, 1);
+    spaceScale->Scale(30, 20, 1);
     auto space = Node::Make(shader, spaceScale, {Color::Make(0.8, 0.8, 0.8), spaceTex}, {Square::Make()});
 
     auto sunScale = Transform::Make();
