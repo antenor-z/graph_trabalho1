@@ -85,16 +85,17 @@ static void initialize (void)
 
     glEnable(GL_DEPTH_TEST);
     camera = Camera2D::Make(-20,20,-20,20);
-    auto earthTex = Texture::Make("face", glm::vec3(0, 0, 1));
-    auto sunTex = Texture::Make("face", "textures/teste.png");
-    auto moonTex = Texture::Make("face", glm::vec3(0.3, 0.3, 0.3));
-    auto mercuryTex = Texture::Make("face", glm::vec3(0.4, 0.4, 0.4));
+    auto earthTex = Texture::Make("face","textures/earth_tex.png");
+    auto sunTex = Texture::Make("face", "textures/sun_tex.png");
+    auto moonTex = Texture::Make("face", "textures/moon_tex.png");
+    auto mercuryTex = Texture::Make("face", "textures/mercury_tex.png");
 
 
     auto sunScale = Transform::Make();
     sunScale->Scale(3, 3, 1);
     auto sun = Node::Make(shader, sunScale, {Color::Make(1, 1, 1), sunTex}, {Disk::Make()});
-    auto earth = Node::Make(shader, {Color::Make(1, 1, 1), earthTex}, {Disk::Make()});
+    auto earthOrbit = Transform::Make();
+    auto earth = Node::Make(shader, earthOrbit, {Color::Make(1, 1, 1), earthTex}, {Disk::Make()});
 
     auto moonTransScale = Transform::Make();
     moonTransScale->Translate(2, 0, 0);
@@ -124,6 +125,7 @@ static void initialize (void)
     scene = Scene::Make(root);
     scene->AddEngine(MovePointer::Make(moonOrbitTrans, 28));
     scene->AddEngine(MovePointer::Make(earthMoonOrbitTrans));
+    scene->AddEngine(MovePointer::Make(earthOrbit, 100));
     scene->AddEngine(MovePointer::Make(mercuryOrbitTrans, 88));
 
 }
