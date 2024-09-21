@@ -7,7 +7,7 @@
 \setlength{\parindent}{0em}
 \setlength{\parskip}{1em}
 \title{Computação Gráfica | Trabalho 1}
-\author{Professor: Waldemar Celles\\
+\author{Professor: Waldemar Celes\\
 Aluno: Antenor Barros Leal}
 \date{29 de setembro de 2024}
 \begin{document}
@@ -16,8 +16,8 @@ Aluno: Antenor Barros Leal}
 \section {Resumo}
 Este trabalho tem como objetivo fazer uma representação simplificada do sistema 
 solar, onde são mostrados o Sol, Mercúrio, a Terra e a Lua. A simulação 
-usa transformações, texturas dentro de uma hierarquia de nodes que organiza os
-movimentos de cena permitindo ser possível movimentos compostos como da Lua em
+usa transformações, texturas dentro de uma hierarquia de nodes, que organiza os
+movimentos de cena permitindo ser possível movimentos compostos, como da Lua em
 torno da Terra e, ao mesmo tempo, do Sol.
 
 \section {Escalas e períodos}
@@ -31,7 +31,7 @@ Na classe da engine, vemos um valor padrão de 1/365, representando o período
 orbital da Terra em dias. Multiplicamos por 5000 para que o movimento fique 
 perceptível e multiplicamos por \texttt{dt} (o intervalo de tempo entre 
 chamadas da função \texttt{update}) para que o movimento seja agnóstico em 
-relação à velocidade do computador. A seguir o código da função update.
+relação à velocidade do computador. A seguir, o código da função update.
 
 \begin{verbatim}
 virtual void Update (float dt)
@@ -47,7 +47,7 @@ rápido.
 
 \section {Diagrama}
 
-O diagrama a seguir apresenta o grafo de cena, mostrando os objetos criados e 
+O diagrama, a seguir, apresenta o grafo de cena, mostrando os objetos criados e 
 suas conexões hierárquicas.
 
 \includegraphics[width=\linewidth]{Trab1Graph.png}
@@ -78,9 +78,9 @@ Terra girar em torno dela mesma. Para a Lua, temos dois nodes de transformação
 
 \begin{itemize}
 \item \texttt{moonTransScale}: responsável por posicionar a Lua em relação à Terra, 
-ajustando sua escala e distância.
+ajustando sua escala e distância;
 \item \texttt{moonOrbit}: é um "container" que faz a Lua orbitar a Terra. Se
-aplicassemos o engine diretamente no moon, a Lua rotacionaria em 
+aplicássemos o engine diretamente no moon, a Lua rotacionaria em 
 torno de si mesma, em vez de orbitar a Terra.
 \end{itemize}
 
@@ -104,8 +104,8 @@ A cena completa é composta pela árvore de nodes descrita acima:
 \begin{itemize}
 \item O \texttt{root} contém os nodes do Sol, Mercúrio e o sistema Terra-Lua, além 
 do fundo.
-\item As engines de movimentação (\texttt{MovePointer}) são responsáveis por 
-atualizar as órbitas com base no tempo.
+\item As engines de movimentação que são responsáveis por atualizar as órbitas 
+são ligadas usando o \texttt{scene->AddEngine}
 \end{itemize}
 
 Essa composição hierárquica permite que a simulação funcione de maneira modular, 
