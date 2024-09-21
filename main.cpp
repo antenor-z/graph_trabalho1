@@ -41,11 +41,11 @@ protected:
 public:
   static MovePointerPtr Make (TransformPtr trf, float period=365)
   {
-    return MovePointerPtr(new MovePointer(trf, period / 10));
+    return MovePointerPtr(new MovePointer(trf, period));
   }
   virtual void Update (float dt)
   {
-    m_trf->Rotate(dt * 1000 / m_period, 0, 0, 1);
+    m_trf->Rotate(dt * 5000 / m_period, 0, 0, 1);
   }
 };
 
@@ -132,7 +132,7 @@ static void initialize (void)
     scene = Scene::Make(root);
     scene->AddEngine(MovePointer::Make(moonOrbitTrans, 28));
     scene->AddEngine(MovePointer::Make(earthMoonOrbitTrans));
-    scene->AddEngine(MovePointer::Make(earthOrbit, 100));
+    scene->AddEngine(MovePointer::Make(earthOrbit, 10));
     scene->AddEngine(MovePointer::Make(mercuryOrbitTrans, 88));
 
 }

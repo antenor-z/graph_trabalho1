@@ -16,33 +16,41 @@ Aluno: Antenor Barros Leal}
 \section {Resumo}
 Este trabalho tem como objetivo fazer uma representação simplificada do sistema 
 solar, onde são mostrados o Sol, Mercúrio, a Terra e a Lua. A simulação 
-implementa transformações, texturas e uma hierarquia de nodes que representam os
- corpos celestes, bem como suas órbitas, com base no tempo decorrido.
+usa transformações, texturas dentro de uma hierarquia de nodes que organiza os
+movimentos de cena permitindo ser possível movimentos compostos como da Lua em
+torno da Terra e, ao mesmo tempo, do Sol.
 
 \section {Escalas e períodos}
 
 As escalas e distâncias dos planetas em relação ao Sol não são realistas, pois, 
-para isso, os planetas teriam que ser muito pequenos e "distantes", tornando-os 
-difíceis de visualizar. Entretanto, as relações entre os períodos orbitais são 
-realistas.
+para isso, os planetas teriam que ser muito pequenos e distantes um do outro, 
+tornando-os difíceis de visualizar. Entretanto, as relações entre os períodos 
+orbitais são realistas.
 
-Na classe da engine, vemos um valor padrão de 365, representando o período 
-orbital da Terra em dias. Multiplicamos por 1000 para que o movimento fique 
-perceptível e multiplicamos por \texttt{t-t0} (o intervalo de tempo entre 
+Na classe da engine, vemos um valor padrão de 1/365, representando o período 
+orbital da Terra em dias. Multiplicamos por 5000 para que o movimento fique 
+perceptível e multiplicamos por \texttt{dt} (o intervalo de tempo entre 
 chamadas da função \texttt{update}) para que o movimento seja agnóstico em 
-relação à velocidade do computador. Este valor de \texttt{t-t0} assegura que as 
-atualizações ocorram com base no tempo real.
+relação à velocidade do computador. A seguir o código da função update.
 
-Para a rotação da Terra (transformação \texttt{earthOrbit}), usei o valor 100. 
-Embora isso não seja realista, foi necessário utilizar um valor alto para que o 
-movimento de rotação da Terra seja perceptível na simulação.
+\begin{verbatim}
+virtual void Update (float dt)
+{
+    m_trf->Rotate(dt * 5000 / m_period, 0, 0, 1);
+}
+\end{verbatim}
+
+Para a rotação da Terra (transformação \texttt{earthOrbit}), usei o valor 10. 
+Embora isso não seja realista (o certo seria 1), foi necessário utilizar um 
+valor mais alto para que o movimento de rotação da Terra não ficasse extremamente 
+rápido.
 
 \section {Diagrama}
 
 O diagrama a seguir apresenta o grafo de cena, mostrando os objetos criados e 
 suas conexões hierárquicas.
 
-\includegraphics[width=0.8\linewidth]{Trab1Graph.png}
+\includegraphics[width=\linewidth]{Trab1Graph.png}
 
 \section {Nodes e Transformações}
 
@@ -59,19 +67,22 @@ mudar seu tamanho.
 \subsection{Mercúrio}
 O node \texttt{mercury} contém a transformação \texttt{mercuryTrans}, responsável 
 por posicionar Mercúrio em sua órbita em torno do Sol. Ele é escalado para ser 
-menor que a Terra e o Sol. O node \texttt{mercuryOrbitTrans} envolve Mercúrio, 
-servindo para rotacioná-lo em torno do Sol. Este node é controlado pela classe 
-\texttt{MovePointer}, que atualiza sua rotação com base no período da órbita de 
-Mercúrio (88 dias, aproximadamente).
+menor que a Terra e o Sol. O node \texttt{mercuryOrbit} envolve Mercúrio, 
+servindo para rotacioná-lo em torno do Sol. Este node é controlado pelo
+\texttt{mercuryOrbitTrans}, que atualiza sua rotação com base no período da 
+órbita de Mercúrio (88 dias, aproximadamente).
 
 \subsection{Terra e Lua}
 O node \texttt{earth} contém a transformação \texttt{earthOrbit}, que faz a 
-Terra girar ao redor do Sol. Para a Lua, temos dois nodes de transformação:
-- \texttt{moonTransScale}: responsável por posicionar a Lua em relação à Terra, 
+Terra girar em torno dela mesma. Para a Lua, temos dois nodes de transformação:
+
+\begin{itemize}
+\item \texttt{moonTransScale}: responsável por posicionar a Lua em relação à Terra, 
 ajustando sua escala e distância.
-- \texttt{moonOrbitTrans}: é um "container" que faz a Lua orbitar a Terra. Se
-aplicassemos o engine diretamente no moonTransScale, a Lua rotacionaria em 
+\item \texttt{moonOrbit}: é um "container" que faz a Lua orbitar a Terra. Se
+aplicassemos o engine diretamente no moon, a Lua rotacionaria em 
 torno de si mesma, em vez de orbitar a Terra.
+\end{itemize}
 
 O node \texttt{earthMoon} agrupa a Terra e a Lua, permitindo que ambas sejam 
 posicionadas como um sistema em torno do Sol. Já o node 
@@ -83,18 +94,22 @@ O fundo da cena é representado por uma textura estrelada, aplicada a um quadrad
 escalado (primitiva \texttt{Square}). A transformação \texttt{spaceTrans} ajusta 
 o tamanho e a posição desse quadrado para ocupar todo o plano de fundo. Para 
 garantir que o fundo fique atrás dos planetas e do Sol, a componente \texttt{z} 
-da transformação de escala é ajustada para um valor inferior (0).
+da transformação de escala é ajustada para um valor inferior, zero, no caso,
+enquanto todos os outros ficam com z igual a um.
 
 \section {Composição de Cena}
 
 A cena completa é composta pela árvore de nodes descrita acima:
-- O \texttt{root} contém os nodes do Sol, Mercúrio e o sistema Terra-Lua, além 
+
+\begin{itemize}
+\item O \texttt{root} contém os nodes do Sol, Mercúrio e o sistema Terra-Lua, além 
 do fundo.
-- As engines de movimentação (\texttt{MovePointer}) são responsáveis por 
+\item As engines de movimentação (\texttt{MovePointer}) são responsáveis por 
 atualizar as órbitas com base no tempo.
+\end{itemize}
 
 Essa composição hierárquica permite que a simulação funcione de maneira modular, 
 onde cada corpo celeste tem suas transformações e atualizações associadas à sua 
-posição e movimento dentro do sistema solar.
+posição local e movimento dentro do sistema solar.
 
 \end{document}
