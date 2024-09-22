@@ -17,8 +17,18 @@ Aluno: Antenor Barros Leal}
 Este trabalho tem como objetivo fazer uma representação simplificada do sistema 
 solar, onde são mostrados o Sol, Mercúrio, a Terra e a Lua. A simulação 
 usa transformações, texturas dentro de uma hierarquia de nodes, que organiza os
-movimentos de cena permitindo ser possível movimentos compostos, como da Lua em
+movimentos de cena.
+
+\section {Movimentos compostos}
+Esta organização hierárquica permite ser possível movimentos compostos, como da Lua em
 torno da Terra e, ao mesmo tempo, do Sol.
+
+Na imagem abaixo a Terra foi retirada e os frames da animação tiveram suas cores
+somadas. Note que o movimento em espiral da Lua é complexo se consideramos o 
+movimento global.
+
+\includegraphics[width=0.8\linewidth]{overlay.png}
+
 
 \section {Escalas e períodos}
 
@@ -27,8 +37,8 @@ para isso, os planetas teriam que ser muito pequenos e distantes um do outro,
 tornando-os difíceis de visualizar. Entretanto, as relações entre os períodos 
 orbitais são realistas.
 
-Na classe da engine, vemos um valor padrão de 1/365, representando o período 
-orbital da Terra em dias. Multiplicamos por 5000 para que o movimento fique 
+Na classe da engine, temos um valor padrão de 365 para o m\_update, que é o período 
+orbital da Terra em dias. Multiplicamos seu inverso por 5000 para que o movimento fique 
 perceptível e multiplicamos por \texttt{dt} (o intervalo de tempo entre 
 chamadas da função \texttt{update}) para que o movimento seja agnóstico em 
 relação à velocidade do computador. A seguir, o código da função update.
@@ -36,7 +46,7 @@ relação à velocidade do computador. A seguir, o código da função update.
 \begin{verbatim}
 virtual void Update (float dt)
 {
-    m_trf->Rotate(dt * 5000 / m_period, 0, 0, 1);
+    m_trf->Rotate(5000 / m_period * dt, 0, 0, 1);
 }
 \end{verbatim}
 
@@ -108,8 +118,12 @@ do fundo.
 são ligadas usando o \texttt{scene->AddEngine}
 \end{itemize}
 
+\section {Resultados}
+
 Essa composição hierárquica permite que a simulação funcione de maneira modular, 
 onde cada corpo celeste tem suas transformações e atualizações associadas à sua 
 posição local e movimento dentro do sistema solar.
+
+Um vídeo de demostração do correto funcionamento foi incluído: arquivo "demo.mp4".
 
 \end{document}

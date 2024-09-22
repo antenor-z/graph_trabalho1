@@ -45,7 +45,7 @@ public:
   }
   virtual void Update (float dt)
   {
-    m_trf->Rotate(dt * 5000 / m_period, 0, 0, 1);
+    m_trf->Rotate(5000 / m_period * dt, 0, 0, 1);
   }
 };
 
